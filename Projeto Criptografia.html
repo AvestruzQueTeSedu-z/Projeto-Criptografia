@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Projeto Criptografia</title>
+    <style>
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Projeto Criptografia</h1>
+
+    <form>
+        <label for="inputMessage">Mensagem Original:</label>
+        <input type="text" id="inputMessage" name="inputMessage" required>
+
+        <label for="inputKey">Chave de Criptografia:</label>
+        <input type="number" id="inputKey" name="inputKey" required>
+
+        <button type="button" onclick="encryptMessage()">Criptografar</button>
+        <button type="button" onclick="decryptMessage()">Descriptografar</button>
+
+        <label for="outputEncrypted">Mensagem Criptografada:</label>
+        <input type="text" id="outputEncrypted" readonly>
+
+        <label for="outputDecrypted">Mensagem Descriptografada:</label>
+        <input type="text" id="outputDecrypted" readonly>
+    </form>
+
+    <script>
+        function encryptMessage() {
+            var inputMessage = document.getElementById("inputMessage").value;
+            var inputKey = parseInt(document.getElementById("inputKey").value);
+
+            var encryptedMessage = cipher(inputMessage, inputKey);
+            document.getElementById("outputEncrypted").value = encryptedMessage;
+        }
+
+        function decryptMessage() {
+            var inputMessage = document.getElementById("inputMessage").value;
+            var inputKey = parseInt(document.getElementById("inputKey").value);
+
+            var decryptedMessage = cipher(inputMessage, -inputKey); // Use -key to decrypt
+            document.getElementById("outputDecrypted").value = decryptedMessage;
+        }
+
+        function cipher(message, key) {
+            var result = "";
+            for (var i = 0; i < message.length; i++) {
+                var charCode = message.charCodeAt(i);
+                if (charCode >= 65 && charCode <= 90) {  // Uppercase letters
+                    result += String.fromCharCode((charCode - 65 + key + 26) % 26 + 65);
+                } else if (charCode >= 97 && charCode <= 122) {  // Lowercase letters
+                    result += String.fromCharCode((charCode - 97 + key + 26) % 26 + 97);
+                } else {
+                    result += message.charAt(i);
+                }
+            }
+            return result;
+        }
+    </script>
+
+</body>
+
+</html>
